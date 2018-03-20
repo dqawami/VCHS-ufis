@@ -17,7 +17,7 @@ pygame.init()
 pygame.mixer.init()
 
 
-def gps_init():
+def gps_init(): #http://www.catb.org/gpsd/gpsd_json.html (look for TPV object)
     #Terminal commands to set up GPS
     subprocess.call(["sudo", "systemctl", "stop", "serial-getty@ttyAMA0.service"])
     subprocess.call(["sudo", "systemctl", "disable", "serial-getty@ttyAMA0.service"])
