@@ -4,11 +4,11 @@ import pygame #Link: http://www.stuffaboutcode.com/2016/05/raspberry-pi-playing-
 import time
 
 #GPS variables
-gps_socket = 0
-data_stream = 0
+gps_socket = 0 #Socket connection for serial port to GPS
+data_stream = 0 #Contains all gps data 
+gps_alt = 0 #GPS altitude
 
-gps_alt = 0
-
+#TBD
 song_path_1 = 0
 song_path_2 = 0
 
@@ -29,15 +29,19 @@ def gps_init(): #http://www.catb.org/gpsd/gpsd_json.html (look for TPV object)
     
     gps_socket = gps3.GPSDSocket()
     data_stream = gps3.DataStream()
-
+    
+    #Connect to serial port
     gps_socket.connect()
+    
+    #Begin data collection
     data_stream.watch()
 
 #main method
 for new_data in gps_socket:
-    if new_data:
+    if new_data: #Checks if there is new data
+        #Makes data accessible 
         data_stream.unpack(new_data)
-        print('Altitude = ', data_stream.TPV['alt'])
+        print('Altitude = ', data_stream.TPV['alt']) #look at link above at gps_init for tpv key terms
 
         while(data_stream.TPV['alt'] > gps_alt):
             gps_alt = data_stream.TPV['alt']
