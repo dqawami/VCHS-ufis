@@ -1,20 +1,13 @@
 from gps3 import gps3 #Link: https://pypi.python.org/pypi/gps3/
 import subprocess
-import pygame #Link: http://www.stuffaboutcode.com/2016/05/raspberry-pi-playing-sound-file-with.html
 import time
+import sys
 
 #GPS variables
 gps_socket = 0 #Socket connection for serial port to GPS
 data_stream = 0 #Contains all gps data 
 gps_alt = 0 #GPS altitude
 
-#TBD
-song_path_1 = 0
-song_path_2 = 0
-
-#Initialise pygame and the mixer
-pygame.init()
-pygame.mixer.init()
 
 
 def gps_init(): #http://www.catb.org/gpsd/gpsd_json.html (look for TPV object)
@@ -37,16 +30,20 @@ def gps_init(): #http://www.catb.org/gpsd/gpsd_json.html (look for TPV object)
     data_stream.watch()
 
 #main method
-for new_data in gps_socket:
-    if new_data: #Checks if there is new data
-        #Makes data accessible 
-        data_stream.unpack(new_data)
-        print('Altitude = ', data_stream.TPV['alt']) #look at link above at gps_init for tpv key terms
+try:
+    for new_data in gps_socket:
+        if new_data: #Checks if there is new data
+            #Makes data accessible 
+            data_stream.unpack(new_data)
+            print('Altitude = ', data_stream.TPV['alt']) #look at link above at gps_init for tpv key terms
+            print('Vertical Velocity = ', data_stream.TPV['climb']) 
 
-        while(data_stream.TPV['alt'] > gps_alt):
-            gps_alt = data_stream.TPV['alt']
+            while(data_stream.TPV['alt'] > gps_alt):
+                gps_alt = data_stream.TPV['alt']
 
-        pygame.mixer.music.load("myFile.wav") #Find file path
-        pygame.mixer.music.play()
-
-        
+            #subprocess.call[('amixer', 'sset' 'PCM' '50%')] #Sets volume to 50% level
+            #subprocess.call[('omxplayer' '-o' 'both' 'ufis.mp3')] #Music file selector
+            #time.sleep(.1)
+            
+except KeyboardInterrupt:
+    sys.exit(0)
