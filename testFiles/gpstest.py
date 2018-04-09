@@ -21,5 +21,5 @@ for new_data in gps_socket:
 	if new_data:
 		#Unpack data for data access
 		data_stream.unpack(new_data)
-		print('Altitude = ', data_stream.TPV['alt']) #http://www.catb.org/gpsd/gpsd_json.html(Choose TPV object for keys)
+		print('Altitude = ', data_stream.TPV['climb']) #http://www.catb.org/gpsd/gpsd_json.html(Choose TPV object for keys)
 
