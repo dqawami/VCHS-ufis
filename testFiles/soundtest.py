@@ -2,7 +2,7 @@ import os
 import sys
 from time import sleep
 
-os.system('amixer sset PCM 50%')
+os.system('amixer sset PCM 1%')
 while True:
     try:
         os.system('omxplayer -o both ufis.mp3')
