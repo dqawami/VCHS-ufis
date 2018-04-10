@@ -8,32 +8,25 @@ subprocess.call(["sudo", "systemctl", "stop", "gpsd.socket"])
 subprocess.call(["sudo", "killall","gpsd"])
 subprocess.call(["sudo", "gpsd", "/dev/ttyS0", "-F", "/var/run/gpsd.sock"])
 
-
-#GPS variables
+#Initialize GPS variables
 gps_socket = gps3.GPSDSocket()
 data_stream = gps3.DataStream()
 
-#Establish connection to serial port
+#Begin GPS connection to serial port for data stream
 gps_socket.connect()
 gps_socket.watch()
 
-#Check for new data and save in file
+#Begin receiving new data from the gps
 try:
-	for new_data in gps_socket:
-		if new_data:
-			#Unpack data for data access
-			data_stream.unpack(new_data)
-			
-			#Print out climb(vertical velocity value)
-			print('Climb = ', data_stream.TPV['climb'])
+        for new_data in gps_socket:
+                if new_data:
+                        #Unpack GPS data to access it
+                        data_stream.unpack(new_data)
 
-#Code interrupts upon keyboard interrupt(Contorl + C)
+                        #Climb or vertical velocity value is accessed from TPV class
+                        print('Climb ', data_stream.TPV['climb'])
+
+#Code interrupt via Control-C
 except KeyboardInterrupt:
-	print("GPS code has been killed") 
-	
-	#Destroying gps instances 
-	gps_socket = None
-	data_stream = None
-	
-	#Code quits 
-	quit()
+        print("GPS has been killed")
+        quit()
