@@ -24,7 +24,7 @@ try:
                         data_stream.unpack(new_data)
 
                         #Climb or vertical velocity value is accessed from TPV class
-                        print('Climb ', data_stream.TPV['climb'])
+                        print('Climb = ', data_stream.TPV['climb'])
 
 #Code interrupt via Control-C
 except KeyboardInterrupt:
