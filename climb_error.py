@@ -41,3 +41,11 @@ except KeyboardInterrupt:
         file.write(max_climb)
         file.close()
         quit()
+        
+except StopIteration:
+        file = open("climb_errors.txt", "a")
+        file.write(max_climb)
+        file.close()	
+        data_stream = None
+	gps_socket = None
+        print ("GPSD has terminated")
