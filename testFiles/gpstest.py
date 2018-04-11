@@ -32,7 +32,6 @@ except KeyboardInterrupt:
         quit()
         
 except StopIteration:
-	print ("Max Climb = ", maxClimb)
 	data_stream = None
 	gps_socket = None
         print ("GPSD has terminated")
